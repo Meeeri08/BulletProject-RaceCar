@@ -134,8 +134,25 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
+		acceleration = -MAX_ACCELERATION;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
 		brake = BRAKE_POWER;
 	}
+
+	
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+
+		if ((jump_cooldown.Read() * 0.001) >= JUMP_COOLDOWN)
+		{
+			vehicle->Push(0.0f, JUMP_IMPULSE, 0.0f);
+			jump_cooldown.Start();
+			
+		}
+	}
+
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
