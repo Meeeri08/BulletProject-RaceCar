@@ -40,11 +40,12 @@ bool ModuleSceneIntro::Start()
 	wall3.SetPos(150, 0, 155);
 	App->physics->AddBody(wall3, 0);
 
-	Cube wall4(310, 50, 10);
-	wall4.SetPos(0, 0, 310);
-	App->physics->AddBody(wall4, 0);
+	//Cube wall4(310, 50, 10);
+	//wall4.SetPos(0, 0, 310);
+	//App->physics->AddBody(wall4, 0);
 
 	//circuit
+
 	Cube wall5(2, 10, 100);
 	wall5.SetPos(-15, 0, 30);
 	App->physics->AddBody(wall5, 0);
@@ -105,21 +106,56 @@ bool ModuleSceneIntro::Start()
 	wall19.SetPos(95, 0, 90);
 	App->physics->AddBody(wall19, 0);
 
-	timer_laps.Start();
 
-
-
-
-	Cube ramp1(40, 40, 1);
-	ramp1.SetPos(0, 0, 50);
+	Cube ramp1(30, 60, 1);
+	ramp1.SetPos(80, 5, 100);
 	ramp1.SetRotation(90 - 20, { 1,0,0 });
 	App->physics->AddBody(ramp1, 0);
 
 
+	Cube wall20(2, 30, 150);
+	wall20.SetPos(95, 10, 170);
+	App->physics->AddBody(wall20, 0);
+
+	Cube wall21(2, 30, 150);
+	wall21.SetPos(65, 10, 170);
+	App->physics->AddBody(wall21, 0);
+
+	Cube wall22(30, 2, 150);
+	wall22.SetPos(80, 10, 195);
+	App->physics->AddBody(wall22, 0);
+
+	Cube wall23(120, 2, 30);
+	wall23.SetPos(40, 10, 260);
+	App->physics->AddBody(wall23, 0);
+
+	Cube wall24(30, 2, 100);
+	wall24.SetPos(-35, 10, 295);
+	App->physics->AddBody(wall24, 0);
+
+	Cube wall25(10, 2, 100);
+	wall25.SetPos(-35, 10, 395);
+	App->physics->AddBody(wall25, 0);
+
+	Cube wall26(80, 2, 10);
+	wall26.SetPos(0, 10, 440);
+	App->physics->AddBody(wall26, 0);
+
+	Cube wall27(10, 2, 100);
+	wall27.SetPos(40, 10, 485);
+	App->physics->AddBody(wall27, 0);
+
+	Cube wall28(10, 2, 110);
+	wall28.SetPos(40, 10, 620);
+	App->physics->AddBody(wall28, 0);
+	
+	timer_laps.Start();
+
+
 	//death sensor for testing
 	/////////////////////////////////////////////////
-	s.size = vec3(5, 3, 1);
-	s.SetPos(0, 2.5f, 20);
+	s.size = vec3(300, 1, 700);
+	s.SetPos(0, 5, 500);
 
 	death_sensor = App->physics->AddBody(s, 0.0f);
 	death_sensor->SetSensor(true);
@@ -157,9 +193,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	wall3.SetPos(150, 0, 155);
 	wall3.Render();
 
-	Cube wall4(310, 50, 10);
-	wall4.SetPos(0, 0, 310);
-	wall4.Render();
+	//Cube wall4(310, 50, 10);
+	//wall4.SetPos(0, 0, 310);
+	//wall4.Render();
 
 	//circuit
 	Cube wall5(2, 10, 100);
@@ -222,13 +258,50 @@ update_status ModuleSceneIntro::Update(float dt)
 	wall19.SetPos(95, 0, 90);
 	wall19.Render();
 
-	Cube ramp1(40, 40, 1);
+	Cube ramp1(30, 60, 1);
 	ramp1.SetRotation(90 - 20, { 1,0,0 });
-	ramp1.SetPos(0, 0, 50);
+	ramp1.SetPos(80, 5, 100);
 	ramp1.Render();
 
+	Cube wall20(2, 30, 150);
+	wall20.SetPos(95, 10, 170);
+	wall20.Render();
+
+	Cube wall21(2, 30, 150);
+	wall21.SetPos(65, 10, 170);
+	wall21.Render();
+
+	Cube wall22(30, 2, 150);
+	wall22.SetPos(80, 10, 195);
+	wall22.Render();
+
+	Cube wall23(120, 2, 30);
+	wall23.SetPos(40, 10, 260);
+	wall23.Render();
+
+	Cube wall24(30, 2, 100);
+	wall24.SetPos(-35, 10, 295);
+	wall24.Render();
+
+	Cube wall25(10, 2, 100);
+	wall25.SetPos(-35, 10, 395);
+	wall25.Render();
+
+	Cube wall26(80, 2, 10);
+	wall26.SetPos(0, 10, 440);
+	wall26.Render();
+
+	Cube wall27(10, 2, 100);
+	wall27.SetPos(40, 10, 485);
+	wall27.Render();
+
+	Cube wall28(10, 2, 110);
+	wall28.SetPos(40, 10, 620);
+	wall28.Render();
+
+
 	death_sensor->GetTransform(&s.transform);
-	s.Render();
+	//s.Render();
 
 	//KM on title window
 	char title[200];
