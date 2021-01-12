@@ -9,6 +9,9 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	ground = new Plane(0, 1, 0, 0);
+	ground->axis = true;
+	ground->color.Set(255, 255, 255);
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -20,8 +23,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	//App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	//App->camera->LookAt(vec3(0, 0, 0));
 
 	//Collisions
 	//limits
@@ -102,11 +105,28 @@ bool ModuleSceneIntro::Start()
 	wall19.SetPos(95, 0, 90);
 	App->physics->AddBody(wall19, 0);
 
+	timer_laps.Start();
 
-	//Cube ramp1(40, 40, 1);
-	//ramp1.SetRotation(120.0f, vec3(1.0f, 0.0f, 1.0f));
-	//ramp1.SetPos(0, 0, 50);
-	//App->physics->AddBody(ramp1, 0);
+
+
+
+	Cube ramp1(40, 40, 1);
+	ramp1.SetPos(0, 0, 50);
+	ramp1.SetRotation(90 - 20, { 1,0,0 });
+	App->physics->AddBody(ramp1, 0);
+
+
+	//death sensor for testing
+	/////////////////////////////////////////////////
+	s.size = vec3(5, 3, 1);
+	s.SetPos(0, 2.5f, 20);
+
+	death_sensor = App->physics->AddBody(s, 0.0f);
+	death_sensor->SetSensor(true);
+	death_sensor->collision_listeners.add(this);
+
+	/////////////////////////////////////////////////
+
 
 	return ret;
 }
@@ -122,9 +142,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+	ground->Render();
+
 	//limits
 	Cube wall1(310, 50, 10);
 	wall1.SetPos(0, 0, -100);
@@ -202,15 +221,30 @@ update_status ModuleSceneIntro::Update(float dt)
 	Cube wall19(2, 10, 40);
 	wall19.SetPos(95, 0, 90);
 	wall19.Render();
-	//Cube ramp1(40, 40, 1);
-	//ramp1.SetRotation(120.0f, vec3(1.0f, 0.0f, 5.0f));
-	//ramp1.SetPos(0, 0, 50);
-	//ramp1.Render();
 
+	Cube ramp1(40, 40, 1);
+	ramp1.SetRotation(90 - 20, { 1,0,0 });
+	ramp1.SetPos(0, 0, 50);
+	ramp1.Render();
+
+	death_sensor->GetTransform(&s.transform);
+	s.Render();
+
+	//KM on title window
+	char title[200];
+	sprintf_s(title, "%.1f Km/h - %02i:%02i", App->player->vehicle->GetKmh(), timer_laps.GetSec() / 60, timer_laps.GetSec() % 60);	
+	App->window->SetTitle(title);
+	
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	LOG("Hit!");
+	if (body1 == death_sensor)
+	{
+		App->player->dead = true;
+		App->player->vehicle->SetPos(0, 2, 0);
+	}
 }
 

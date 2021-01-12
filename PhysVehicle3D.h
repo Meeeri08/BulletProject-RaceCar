@@ -5,6 +5,7 @@
 
 class btRaycastVehicle;
 struct PhysBody3D;
+struct Color;
 
 struct Wheel
 {
@@ -26,6 +27,12 @@ struct VehicleInfo
 	
 	vec3 chassis_size;
 	vec3 chassis_offset;
+
+	uint new_parts;
+	vec3* new_parts_size;
+	vec3* new_parts_offset;
+	Color* color;
+
 	float mass;
 	float suspensionStiffness; // default to 5.88 / 10.0 offroad / 50.0 sports car / 200.0 F1 car
 	float suspensionCompression; // default to 0.83

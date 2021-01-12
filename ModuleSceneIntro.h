@@ -21,15 +21,11 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
+	void CreateCube(vec3 dimensions, vec3 pos, int rot = 0, vec3 vecRot = { 0,0,0 });
+	void DrawMap();
+
 public:
-	/*
-	PhysBody3D* pb_snake[MAX_SNAKE];
-	Sphere s_snake[MAX_SNAKE];
-
-	PhysBody3D* pb_snake2[MAX_SNAKE];
-	Sphere s_snake2[MAX_SNAKE];
-	*/
-
+	Plane* ground;
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
 
@@ -41,4 +37,13 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	Timer timer_laps;
+	Cube s,death,win;
+	PhysBody3D* sensor = nullptr;
+	PhysBody3D* death_sensor = nullptr;
+	uint best_time = 6000;
+	p2List<Cube> cube;
+	
+
 };
