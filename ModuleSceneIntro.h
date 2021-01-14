@@ -23,6 +23,7 @@ public:
 
 	void CreateCube(vec3 dimensions, vec3 pos, int rot = 0, vec3 vecRot = { 0,0,0 });
 	void DrawMap();
+	void DrawCollisions();
 
 public:
 	Plane* ground;

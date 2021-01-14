@@ -8,7 +8,7 @@ struct PhysVehicle3D;
 #define MAX_ACCELERATION 2000.0f
 #define TURN_DEGREES 15.0f * DEGTORAD
 #define BRAKE_POWER 500.0f
-#define JUMP_COOLDOWN 3.0f
+#define JUMP_COOLDOWN 1.3f
 #define JUMP_IMPULSE 5000.0f
 #define SPEED_LIMIT 140.0f
 
