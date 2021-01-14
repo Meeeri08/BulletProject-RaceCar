@@ -253,16 +253,78 @@ update_status ModulePlayer::Update(float dt)
 	int miliseconds_i = decimal_seconds * 1000;
 
 	secExact = game_timer.GetSec();
+	lowtime_total = timer_milisec_read;
+
+	if (secExact != 0)
+	{
+		bestMinutes_f = minutes_f;
+		bestMinutes_i = minutes_i;
+		bestDecimal_minutes = decimal_minutes;
+		bestSeconds_f = seconds_f;
+		bestSeconds_i = seconds_i;
+		bestDecimal_seconds = decimal_seconds;
+		bestMiliseconds_i = miliseconds_i;
+		firstTime = true;
+	}
+	
+	if (secExact == 0 && firstTime)
+	{
+		best_time = true;
+		firstTime = false;
+	}
 
 	//WINDOW TITLE
 	if ((timer_milisec_read < lowtime_total) || (best_time == true))
 	{
 		lowtime_total = timer_milisec_read;
-		lowtime_mil = miliseconds_i;
-		lowtime_sec = seconds_i;
-		lowtime_min = minutes_i;
+		lowtime_mil = bestMiliseconds_i;
+		lowtime_sec = bestSeconds_i;
+		lowtime_min = bestMinutes_i;
 		best_time = false;
 	}
+
+	//if (secExact != 0)
+	//{
+	//	bestTimeMil = lowtime_total;
+	//	bestTimeSec = secExact;
+	//	if (tempscadasis > 59)
+	//	{
+	//		bestTimeMin++;
+	//		tempscadasis = 0;
+	//	}
+	//}
+	//if (lowtime_total == 0 && bestTimeMil > 0)
+	//{
+	//	if (!globalBestTime)
+	//	{
+	//		globalBestTimeSec = bestTimeMil;
+	//		globalBestTime = true;
+	//		best_time = true;
+	//	}
+	//	else if (globalBestTimeSec > bestTimeMil)
+	//	{
+	//		globalBestTimeSec = bestTimeMil;
+	//		best_time = true;
+
+	//	}
+	//}
+
+	//if (best_time)
+	//{
+
+	//	if (globalBestTimeSec > 1000)
+	//	{
+	//		lowtime_mil = globalBestTimeSec / bestTimeSec + 1;
+
+	//	}
+	//	else lowtime_mil = globalBestTimeSec;
+
+	//	if(bestTimeSec>=60) lowtime_sec = bestTimeSec /60;
+
+	//	lowtime_min = minutes_i;
+	//	best_time = false;
+	//}
+
 
 	if (win == false)
 	{

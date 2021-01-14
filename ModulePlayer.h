@@ -40,7 +40,13 @@ public:
 	int lowtime_sec = 0;
 	int lowtime_min = 0;
 
-	bool best_time = true;
+	bool best_time = false;
+	bool globalBestTime = false; 
+	int bestTimeMil = 0;
+	int bestTimeSec = 0;
+	int bestTimeMin = 0;
+	int globalBestTimeSec = 0;//millor temps en segons de sempre
+	int tempscadasis = 0;
 
 	int secExact = 0;
 
@@ -48,6 +54,19 @@ public:
 	bool turboUp = false;
 	bool turboWait = false;
 	int timeTurbo = 1;
+
+
+
+	float bestMinutes_f;
+	int bestMinutes_i;
+	float bestDecimal_minutes;
+	float bestSeconds_f;
+	int bestSeconds_i;
+	float bestDecimal_seconds;
+	int bestMiliseconds_i;
+
+	bool firstTime = false;
+
 
 
 	//Audio
