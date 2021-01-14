@@ -33,6 +33,7 @@ public:
 	bool win = false;
 	int timer = 0;
 	Timer game_timer;
+	int timerTurbo = 0;
 
 	int lowtime_total = 0;
 	int lowtime_mil = 0;
@@ -41,6 +42,15 @@ public:
 
 	bool best_time = true;
 
+	int secExact = 0;
+
+	bool turbo = false;
+	bool turboUp = false;
+	bool turboWait = false;
+	int timeTurbo = 1;
+
+
 	//Audio
 	uint jumpFx;
+	uint turboFx;
 };

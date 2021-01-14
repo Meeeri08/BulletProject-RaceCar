@@ -21,10 +21,9 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	jumpFx = App->audio->LoadFx("Assets/jump.wav");
-
+	turboFx = App->audio->LoadFx("Assets/turbo.wav");
 
 	VehicleInfo car;
-
 	// Car properties ----------------------------------------
 	car.new_parts = 7;
 	car.new_parts_size = new vec3[car.new_parts];
@@ -79,12 +78,12 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x*0.5f;
-	float half_length = car.chassis_size.z*0.5f;
-	
-	vec3 direction(0,-1,0);
-	vec3 axis(-1,0,0);
-	
+	float half_width = car.chassis_size.x * 0.5f;
+	float half_length = car.chassis_size.z * 0.5f;
+
+	vec3 direction(0, -1, 0);
+	vec3 axis(-1, 0, 0);
+
 	car.num_wheels = 4;
 	car.wheels = new Wheel[4];
 
@@ -161,7 +160,7 @@ void ModulePlayer::Restart()
 	else
 	{
 		game_timer.Start();
-		
+
 		timer = 0;
 		dead = false;
 	}
@@ -186,13 +185,13 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
+		if (turn < TURN_DEGREES)
+			turn += TURN_DEGREES;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		if(turn > -TURN_DEGREES)
+		if (turn > -TURN_DEGREES)
 			turn -= TURN_DEGREES;
 	}
 
@@ -207,7 +206,7 @@ update_status ModulePlayer::Update(float dt)
 		brake = BRAKE_POWER;
 	}
 
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 
@@ -220,6 +219,14 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
+	//turbo
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !turboWait)
+	{
+		turbo = true;
+		App->audio->PlayFx(turboFx);
+		
+	}
+
 
 	if (dead == true)
 	{
@@ -227,13 +234,12 @@ update_status ModulePlayer::Update(float dt)
 	}
 
 
-
-	vehicle->ApplyEngineForce(acceleration);
+	if (!turbo) vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
 	vehicle->Render();
-	
+
 	//Minuts:Segons:Milisegons
 
 	int timer_milisec_read = game_timer.Read();
@@ -246,6 +252,7 @@ update_status ModulePlayer::Update(float dt)
 	float decimal_seconds = seconds_f - seconds_i;
 	int miliseconds_i = decimal_seconds * 1000;
 
+	secExact = game_timer.GetSec();
 
 	//WINDOW TITLE
 	if ((timer_milisec_read < lowtime_total) || (best_time == true))
@@ -258,16 +265,35 @@ update_status ModulePlayer::Update(float dt)
 	}
 
 	if (win == false)
-	{ 
-	char title[80];
-	sprintf_s(title, " Time: %i:%2.i:%4.i        Velocity: %4.1f Km/h       Best Time: %i:%i:%i", minutes_i, seconds_i, miliseconds_i, vehicle->GetKmh(), lowtime_min, lowtime_sec, lowtime_mil );
-	App->window->SetTitle(title);
+	{
+		char title[80];
+		sprintf_s(title, " Time: %i:%2.i:%4.i        Velocity: %4.1f Km/h       Best Time: %i:%i:%i", minutes_i, seconds_i, miliseconds_i, vehicle->GetKmh(), lowtime_min, lowtime_sec, lowtime_mil);
+		App->window->SetTitle(title);
+	}
+	if (turbo)
+	{
+		timerTurbo = secExact + timeTurbo;
+		turboUp = true;
+		turbo = false;
+		turboWait = true;
 	}
 
-	
+	if (turboUp)
+	{
+		if (secExact <= timerTurbo + timeTurbo * 2)
+		{
+			vehicle->ApplyEngineForce(MAX_ACCELERATION * 3);
+		}
+		else
+		{
+			turboUp = false;
+		}
+	}
+
+	if (turboWait)
+	{
+		if (secExact >= timerTurbo + timeTurbo * 20) turboWait = false;
+	}
 
 	return UPDATE_CONTINUE;
 }
-
-
-
