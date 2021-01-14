@@ -61,6 +61,11 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	DrawMap();
 
+	/////POSAR IF PER CHECPOINT FINAL
+	//Cube wall7(32, 21, 1);
+	//wall7.SetPos(0, 1, 9);
+	//App->physics->AddBody(wall7, 0);
+
 	death_sensor->GetTransform(&s.transform);
 	//s.Render();
 
@@ -125,8 +130,9 @@ void ModuleSceneIntro::DrawCollisions()
 	wall6.SetPos(15, 0, 45);
 	App->physics->AddBody(wall6, 0);
 
-	//Cube wall7(32, 2, 2);
-	//wall7.SetPos(0, 1, -20);
+	/////POSAR IF PER CHECPOINT FINAL
+	//Cube wall7(32, 21, 1);
+	//wall7.SetPos(0, 1, 9);
 	//App->physics->AddBody(wall7, 0);
 
 
@@ -364,10 +370,6 @@ void ModuleSceneIntro::DrawCollisions()
 	wall48.SetPos(15, 0, -60);
 	App->physics->AddBody(wall48, 0);
 }
-
-
-
-
 
 
 
@@ -837,9 +839,11 @@ void ModuleSceneIntro::DrawMap()
 	wall6.SetPos(15, 0, 45);
 	wall6.Render();
 
-	//Cube wall7(32, 2, 2);
+
+	/////POSAR IF PER CHECPOINT FINAL
+	//Cube wall7(32, 1, 1);
 	//wall7.color.Set(1.0f, 0.0f, 1.0f);
-	//wall7.SetPos(0, 1, -20);
+	//wall7.SetPos(0, 1, 9);
 	//wall7.Render();
 
 	Cube wall8(70, 30, 2);
