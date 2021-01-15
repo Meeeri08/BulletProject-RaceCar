@@ -72,4 +72,6 @@ public:
 	//Audio
 	uint jumpFx;
 	uint turboFx;
+	uint deadFx;
+
 };

@@ -22,6 +22,7 @@ bool ModulePlayer::Start()
 
 	jumpFx = App->audio->LoadFx("Assets/jump.wav");
 	turboFx = App->audio->LoadFx("Assets/turbo.wav");
+	deadFx = App->audio->LoadFx("Assets/dead.wav");
 
 	VehicleInfo car;
 	// Car properties ----------------------------------------
@@ -214,7 +215,7 @@ update_status ModulePlayer::Update(float dt)
 		{
 			vehicle->Push(0.0f, JUMP_IMPULSE, 0.0f);
 			jump_cooldown.Start();
-			//App->audio->PlayFx(jumpFx);
+			App->audio->PlayFx(jumpFx);
 
 		}
 	}
@@ -231,6 +232,7 @@ update_status ModulePlayer::Update(float dt)
 	if (dead == true)
 	{
 		Restart();
+		App->audio->PlayFx(deadFx);
 	}
 
 

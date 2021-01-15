@@ -41,7 +41,7 @@ bool ModuleSceneIntro::Start()
 	death_sensor->collision_listeners.add(this);
 
 	/////////////////////////////////////////////////
-
+	App->audio->PlayMusic("Assets/gamemusic.ogg");
 
 	return ret;
 }
