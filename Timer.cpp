@@ -51,3 +51,15 @@ Uint32 Timer::GetSec()
 }
 
 
+Uint32 Timer::GetMiliSec()
+{
+	if (running == true)
+	{
+		return (SDL_GetTicks() - started_at);
+	}
+	else
+	{
+		return (stopped_at - started_at);
+	}
+}
+

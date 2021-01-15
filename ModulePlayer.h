@@ -41,14 +41,10 @@ public:
 	int lowtime_min = 0;
 
 	bool best_time = false;
-	bool globalBestTime = false; 
-	int bestTimeMil = 0;
-	int bestTimeSec = 0;
-	int bestTimeMin = 0;
-	int globalBestTimeSec = 0;//millor temps en segons de sempre
-	int tempscadasis = 0;
+	int lastBestTime = 0;
 
 	int secExact = 0;
+	int miliExact = 0;
 
 	bool turbo = false;
 	bool turboUp = false;
@@ -65,9 +61,14 @@ public:
 	float bestDecimal_seconds;
 	int bestMiliseconds_i;
 
+
+
+	bool notZero = false;
 	bool firstTime = false;
 
-
+	float posX;
+	float posY;
+	float posZ;
 
 	//Audio
 	uint jumpFx;

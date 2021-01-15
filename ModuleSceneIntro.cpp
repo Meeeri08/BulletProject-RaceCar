@@ -30,6 +30,7 @@ bool ModuleSceneIntro::Start()
 	
 	timer_laps.Start();
 
+	//int a = 0;
 
 	//death sensor for testing
 	/////////////////////////////////////////////////
@@ -41,7 +42,20 @@ bool ModuleSceneIntro::Start()
 	death_sensor->collision_listeners.add(this);
 
 	/////////////////////////////////////////////////
+
 	App->audio->PlayMusic("Assets/gamemusic.ogg");
+
+	//Checkpoints
+	s.size = vec3(25, 1, 1);
+	s.SetPos(0, 2, 80);
+
+	checkpoint_sensor1 = App->physics->AddBody(s, 0.0f);
+	checkpoint_sensor1->SetSensor(true);
+	checkpoint_sensor1->collision_listeners.add(this);
+
+
+
+
 
 	return ret;
 }
@@ -60,6 +74,22 @@ update_status ModuleSceneIntro::Update(float dt)
 	ground->Render();
 
 	DrawMap();
+	
+	if (!checkpointTaken1)
+	{
+		Cube checkpoint1(25, 1, 1);
+		checkpoint1.color.Set(0.0f, 0.0f, 1.0f);
+		checkpoint1.SetPos(0, 2, 80);
+		checkpoint1.Render();
+	}
+	
+	if (App->player->dead && !finishDead)
+	{
+		App->player->vehicle->SetPos(posX, posY, posZ);
+		checkpointTaken1 = false;
+		finishDead = true;
+	}
+
 
 	/////POSAR IF PER CHECPOINT FINAL
 	//Cube wall7(32, 21, 1);
@@ -67,6 +97,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	//App->physics->AddBody(wall7, 0);
 
 	death_sensor->GetTransform(&s.transform);
+
+	//checkpoints
+	checkpoint_sensor1->GetTransform(&s.transform);
+
 	//s.Render();
 
 	//KM on title window
@@ -84,6 +118,14 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{
 		App->player->dead = true;
 		App->player->vehicle->SetPos(0, 2, 0);
+	}
+	if (body1 == checkpoint_sensor1)
+	{
+		posX = App->player->posX;
+		posY = App->player->posY;
+		posZ = App->player->posZ;
+		checkpointTaken1 = true;
+
 	}
 }
 
@@ -826,6 +868,9 @@ void ModuleSceneIntro::DrawMap()
 	flag84.SetPos(13, 12, 10);
 	flag84.Render();
 
+
+
+
 	///////////////////////////////////////////////////////////////
 
 	//circuit
@@ -840,6 +885,7 @@ void ModuleSceneIntro::DrawMap()
 	wall6.Render();
 
 
+	
 	/////POSAR IF PER CHECPOINT FINAL
 	//Cube wall7(32, 1, 1);
 	//wall7.color.Set(1.0f, 0.0f, 1.0f);
@@ -1130,5 +1176,8 @@ void ModuleSceneIntro::DrawMap()
 	wall48.color.Set(1.0f, 0.0f, 1.0f);
 	wall48.SetPos(15, 0, -60);
 	wall48.Render();
+
+
+
 
 }

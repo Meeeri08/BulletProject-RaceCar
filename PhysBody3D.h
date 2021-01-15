@@ -20,7 +20,9 @@ public:
 	void SetPos(float x, float y, float z);
 	void SetSensor(bool is_sensor);
 	bool IsSensor() const;
-
+	float getPosX();
+	float getPosY();
+	float getPosZ();
 
 private:
 	btRigidBody* body = nullptr;

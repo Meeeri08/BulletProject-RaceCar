@@ -16,6 +16,7 @@ public:
 
 	Uint32 Read();
 	Uint32 GetSec();
+	Uint32 GetMiliSec();
 
 private:
 

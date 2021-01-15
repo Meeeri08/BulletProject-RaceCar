@@ -41,10 +41,18 @@ public:
 
 	Timer timer_laps;
 	Cube s,death,win;
-	PhysBody3D* sensor = nullptr;
 	PhysBody3D* death_sensor = nullptr;
 	uint best_time = 6000;
 	p2List<Cube> cube;
 	
+	//checkpoints
+	PhysBody3D* checkpoint_sensor1 = nullptr;
 
+	bool checkpoint = false;
+	bool checkpointTaken1 = false;
+	float posX;
+	float posY;
+	float posZ;
+
+	bool finishDead = false;
 };

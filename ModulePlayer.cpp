@@ -164,6 +164,7 @@ void ModulePlayer::Restart()
 
 		timer = 0;
 		dead = false;
+		App->scene_intro->finishDead = false;
 	}
 	timer++;
 }
@@ -175,6 +176,38 @@ update_status ModulePlayer::Update(float dt)
 
 
 	int VehicleVelocity = App->player->vehicle->GetKmh();
+
+	posX = vehicle->getPosX();
+	posY = vehicle->getPosY();
+	posZ = vehicle->getPosZ();
+
+
+	//if (turboUp)
+	//{
+	//	Cube prova(1, 1, 1);
+	//	prova.color.Set(1.0f, 1.0f, 1.0f);
+	//	prova.SetPos(vehicle->getPosX(), vehicle->getPosY() + 5, vehicle->getPosZ());
+	//	prova.Render();
+	//}
+	//else
+	//{
+	//	Cube prova(1, 1, 1);
+	//	prova.color.Set(1.0f, 0.5f, 1.0f);
+	//	prova.SetPos(vehicle->getPosX(), vehicle->getPosY() + 5, vehicle->getPosZ());
+	//	prova.Render();
+	//}
+
+	//if (turboUp)
+	//{
+	//	Cube prova(1, 1, 1);
+	//	prova.color.Set(1.0f, 1.0f, 1.0f);
+	//	prova.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	//	prova.Render();
+	//}
+	//else
+	//{
+
+	//}
 
 
 	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && (VehicleVelocity <= SPEED_LIMIT))
@@ -255,9 +288,11 @@ update_status ModulePlayer::Update(float dt)
 	int miliseconds_i = decimal_seconds * 1000;
 
 	secExact = game_timer.GetSec();
-	lowtime_total = timer_milisec_read;
+	miliExact = game_timer.GetMiliSec();
 
-	if (secExact != 0)
+	//if(secExact !=0) lowtime_total = miliExact;
+
+	if (miliExact != 0)
 	{
 		bestMinutes_f = minutes_f;
 		bestMinutes_i = minutes_i;
@@ -266,70 +301,41 @@ update_status ModulePlayer::Update(float dt)
 		bestSeconds_i = seconds_i;
 		bestDecimal_seconds = decimal_seconds;
 		bestMiliseconds_i = miliseconds_i;
-		firstTime = true;
+		lowtime_total = miliExact;
+		notZero = true;
 	}
 	
-	if (secExact == 0 && firstTime)
+	if (miliExact == 0 && notZero)
 	{
 		best_time = true;
-		firstTime = false;
+		notZero = false;
 	}
 
-	//WINDOW TITLE
-	if ((timer_milisec_read < lowtime_total) || (best_time == true))
+	if (best_time == true)
 	{
-		lowtime_total = timer_milisec_read;
-		lowtime_mil = bestMiliseconds_i;
-		lowtime_sec = bestSeconds_i;
-		lowtime_min = bestMinutes_i;
+
+		if (lastBestTime > lowtime_total)
+		{
+			lowtime_mil = bestMiliseconds_i;
+			lowtime_sec = bestSeconds_i;
+			lowtime_min = bestMinutes_i;
+			lastBestTime = lowtime_total;			
+		}
+		if (lastBestTime == 0)
+		{
+			lowtime_mil = bestMiliseconds_i;
+			lowtime_sec = bestSeconds_i;
+			lowtime_min = bestMinutes_i;
+			lastBestTime = lowtime_total;
+		}
 		best_time = false;
 	}
 
-	//if (secExact != 0)
-	//{
-	//	bestTimeMil = lowtime_total;
-	//	bestTimeSec = secExact;
-	//	if (tempscadasis > 59)
-	//	{
-	//		bestTimeMin++;
-	//		tempscadasis = 0;
-	//	}
-	//}
-	//if (lowtime_total == 0 && bestTimeMil > 0)
-	//{
-	//	if (!globalBestTime)
-	//	{
-	//		globalBestTimeSec = bestTimeMil;
-	//		globalBestTime = true;
-	//		best_time = true;
-	//	}
-	//	else if (globalBestTimeSec > bestTimeMil)
-	//	{
-	//		globalBestTimeSec = bestTimeMil;
-	//		best_time = true;
-
-	//	}
-	//}
-
-	//if (best_time)
-	//{
-
-	//	if (globalBestTimeSec > 1000)
-	//	{
-	//		lowtime_mil = globalBestTimeSec / bestTimeSec + 1;
-
-	//	}
-	//	else lowtime_mil = globalBestTimeSec;
-
-	//	if(bestTimeSec>=60) lowtime_sec = bestTimeSec /60;
-
-	//	lowtime_min = minutes_i;
-	//	best_time = false;
-	//}
 
 
 	if (win == false)
 	{
+
 		char title[80];
 		sprintf_s(title, " Time: %i:%2.i:%4.i        Velocity: %4.1f Km/h       Best Time: %i:%i:%i", minutes_i, seconds_i, miliseconds_i, vehicle->GetKmh(), lowtime_min, lowtime_sec, lowtime_mil);
 		App->window->SetTitle(title);

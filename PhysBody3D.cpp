@@ -65,3 +65,19 @@ bool PhysBody3D::IsSensor() const
 {
 	return is_sensor;
 }
+
+
+float PhysBody3D::getPosX()
+{
+	return body->getWorldTransform().getOrigin().getX();
+}
+
+float PhysBody3D::getPosY()
+{
+	return body->getWorldTransform().getOrigin().getY();
+}
+
+float PhysBody3D::getPosZ()
+{
+	return body->getWorldTransform().getOrigin().getZ();
+}
