@@ -45,6 +45,12 @@ public:
 	uint best_time = 6000;
 	p2List<Cube> cube;
 
+	PhysBody3D* jump_sensor = nullptr;
+	bool jumpEnabled = true;
+	PhysBody3D* jump_sensor1 = nullptr;
+	PhysBody3D* jump_sensor2 = nullptr;
+	PhysBody3D* jump_sensor3 = nullptr;
+	PhysBody3D* jump_sensor4 = nullptr;
 	//checkpoints
 	PhysBody3D* checkpoint_sensor0 = nullptr;
 	PhysBody3D* checkpoint_sensor1 = nullptr;

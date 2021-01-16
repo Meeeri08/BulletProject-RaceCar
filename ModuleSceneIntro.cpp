@@ -32,7 +32,7 @@ bool ModuleSceneIntro::Start()
 
 	//int a = 0;
 
-	//death sensor for testing
+	//death sensor
 	/////////////////////////////////////////////////
 	s.size = vec3(300, 1, 700);
 	s.SetPos(0, 5, 500);
@@ -45,6 +45,45 @@ bool ModuleSceneIntro::Start()
 
 	App->audio->PlayMusic("Assets/gamemusic.ogg");
 
+
+	//jump enabled sensor
+	s.size = vec3(25, 2, 2);
+	s.SetPos(80, 17, 125);
+
+	jump_sensor = App->physics->AddBody(s, 0.0f);
+	jump_sensor->SetSensor(true);
+	jump_sensor->collision_listeners.add(this);
+
+
+	s.size = vec3(25, 2, 150);
+	s.SetPos(80, 12, 210);
+
+	jump_sensor1 = App->physics->AddBody(s, 0.0f);
+	jump_sensor1->SetSensor(true);
+	jump_sensor1->collision_listeners.add(this);
+
+
+	s.size = vec3(25, 15, 2);
+	s.SetPos(-100, 13, 580);
+
+	jump_sensor2 = App->physics->AddBody(s, 0.0f);
+	jump_sensor2->SetSensor(true);
+	jump_sensor2->collision_listeners.add(this);
+
+
+	s.size = vec3(20, 2, 50);
+	s.SetPos(-100, 12, 500);
+
+	jump_sensor3 = App->physics->AddBody(s, 0.0f);
+	jump_sensor3->SetSensor(true);
+	jump_sensor3->collision_listeners.add(this);
+
+	s.size = vec3(100, 2, 200);
+	s.SetPos(-90, 7, 530);
+
+	jump_sensor4 = App->physics->AddBody(s, 0.0f);
+	jump_sensor4->SetSensor(true);
+	jump_sensor4->collision_listeners.add(this);
 	//Checkpoint 0
 	s.size = vec3(25, 1, 1);
 	s.SetPos(0, 2, 8);
@@ -128,7 +167,6 @@ update_status ModuleSceneIntro::Update(float dt)
 		checkpoint1.Render();
 	}
 
-
 	//if (!checkpointActiveFinal)
 	//{
 	//	Cube checkpoint_activeFinal(25, 1, 1);
@@ -194,6 +232,27 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			posZ = App->player->posZ;*/
 
 	}
+	if (body1 == jump_sensor)
+	{
+		jumpEnabled = false;
+	}
+	if (body1 == jump_sensor1)
+	{
+		jumpEnabled = true;
+	}
+	if (body1 == jump_sensor2)
+	{
+		jumpEnabled = false;
+	}
+	if (body1 == jump_sensor3)
+	{
+		jumpEnabled = true;
+	}
+	if (body1 == jump_sensor4)
+	{
+		jumpEnabled = true;
+	}
+
 	if (body1 == checkpoint_sensor0)
 	{
 		posX = App->player->posX;
