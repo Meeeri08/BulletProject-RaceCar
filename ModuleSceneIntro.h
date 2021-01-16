@@ -40,16 +40,27 @@ public:
 	PhysMotor3D* right_wheel;
 
 	Timer timer_laps;
-	Cube s,death,win;
+	Cube s, death, win;
 	PhysBody3D* death_sensor = nullptr;
 	uint best_time = 6000;
 	p2List<Cube> cube;
-	
+
 	//checkpoints
+	PhysBody3D* checkpoint_sensor0 = nullptr;
 	PhysBody3D* checkpoint_sensor1 = nullptr;
 
+	PhysBody3D* checkpoint_activeFinal = nullptr;
+	PhysBody3D* checkpoint_final = nullptr;
+	PhysBody3D* barrier = nullptr;
+
 	bool checkpoint = false;
+	bool checkpointTaken0 = false;
 	bool checkpointTaken1 = false;
+
+	bool checkpointActiveFinal = false;
+	bool checkpointFinalTaken1 = false;
+
+
 	float posX;
 	float posY;
 	float posZ;

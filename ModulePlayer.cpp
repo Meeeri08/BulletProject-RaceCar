@@ -137,7 +137,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 2, 12);
+	vehicle->SetPos(0, 2, 7);
 
 	game_timer.Start();
 
@@ -258,7 +258,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		turbo = true;
 		App->audio->PlayFx(turboFx);
-		
+
 	}
 
 
@@ -304,7 +304,7 @@ update_status ModulePlayer::Update(float dt)
 		lowtime_total = miliExact;
 		notZero = true;
 	}
-	
+
 	if (miliExact == 0 && notZero)
 	{
 		best_time = true;
@@ -319,7 +319,7 @@ update_status ModulePlayer::Update(float dt)
 			lowtime_mil = bestMiliseconds_i;
 			lowtime_sec = bestSeconds_i;
 			lowtime_min = bestMinutes_i;
-			lastBestTime = lowtime_total;			
+			lastBestTime = lowtime_total;
 		}
 		if (lastBestTime == 0)
 		{
