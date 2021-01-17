@@ -138,6 +138,7 @@ bool ModulePlayer::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 2,7);
+	//vehicle->SetPos(0, 2, -12);
 
 	game_timer.Start();
 
@@ -156,18 +157,40 @@ void ModulePlayer::Restart()
 {
 	if (timer < 100) {
 		App->player->vehicle->Brake(BRAKE_POWER);
-		game_timer.Stop();
+		//game_timer.Stop();
 	}
 	else
 	{
-		game_timer.Start();
+		//game_timer.Start();
 
-		timer = 0;
+		//timer = 0;
 		dead = false;
 		App->scene_intro->finishDead = false;
 	}
 	timer++;
 }
+
+void ModulePlayer::RestartLap()
+{
+
+	game_timer.Stop();
+	timer = 0;
+	game_timer.Start();
+	restartLap = true;
+	//if (timer < 100) {
+	//	App->player->vehicle->Brake(BRAKE_POWER);
+	//	game_timer.Stop();
+	//}
+	//else
+	//{
+	//	game_timer.Start();
+	//	timer = 0;
+
+	//	//App->scene_intro->finishDead = false;
+	//}
+	//timer++;
+}
+
 
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
@@ -321,6 +344,7 @@ update_status ModulePlayer::Update(float dt)
 			lowtime_min = bestMinutes_i;
 			lastBestTime = lowtime_total;
 		}
+		
 		if (lastBestTime == 0)
 		{
 			lowtime_mil = bestMiliseconds_i;
@@ -337,6 +361,14 @@ update_status ModulePlayer::Update(float dt)
 	{
 
 		char title[80];
+		if (laps == 0)
+		{
+			lowtime_mil = 0;
+			lowtime_sec = 0;
+			lowtime_min = 0;
+			lastBestTime = 0;
+		}
+
 		sprintf_s(title, " Time: %i:%2.i:%4.i        Velocity: %4.1f Km/h       Best Time: %i:%i:%i", minutes_i, seconds_i, miliseconds_i, vehicle->GetKmh(), lowtime_min, lowtime_sec, lowtime_mil);
 		App->window->SetTitle(title);
 	}
@@ -364,6 +396,19 @@ update_status ModulePlayer::Update(float dt)
 	{
 		if (secExact >= timerTurbo + timeTurbo * 20) turboWait = false;
 	}
+
+
+	if(lap)
+	{ 
+		RestartLap();
+		lap = false;
+		laps++;
+	}
+
+
+
+
+
 
 	return UPDATE_CONTINUE;
 }

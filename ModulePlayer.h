@@ -22,6 +22,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	void Restart();
+	void RestartLap();
 
 public:
 	Timer jump_cooldown;
@@ -30,6 +31,7 @@ public:
 	float acceleration;
 	float brake;
 	bool dead = false;
+	bool lap = false;
 	bool win = false;
 	int timer = 0;
 	Timer game_timer;
@@ -61,7 +63,8 @@ public:
 	float bestDecimal_seconds;
 	int bestMiliseconds_i;
 
-
+	bool restartLap = false;
+	int laps = 0;
 
 	bool notZero = false;
 	bool firstTime = false;

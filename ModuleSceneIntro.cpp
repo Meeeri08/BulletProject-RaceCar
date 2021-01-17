@@ -118,7 +118,7 @@ bool ModuleSceneIntro::Start()
 	checkpoint_final->collision_listeners.add(this);
 
 
-	s.size = vec3(25, 1, 1);
+	s.size = vec3(25, 20, 1);
 	s.SetPos(0, 1, 2);
 
 	barrier = App->physics->AddBody(s, 0.0f);
@@ -205,6 +205,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	checkpoint_final->GetTransform(&s.transform);
 	barrier->GetTransform(&s.transform);
 
+
 	//s.Render();
 
 	//KM on title window
@@ -283,6 +284,10 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posY = App->player->posY;
 		posZ = App->player->posZ;
 		checkpointFinalTaken1 = true;
+		App->player->lap = true;
+		checkpointActiveFinal = false;
+		//App->player->Restart();
+		//App->player->dead = true;
 
 	}
 
