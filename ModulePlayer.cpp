@@ -177,6 +177,8 @@ void ModulePlayer::RestartLap()
 	timer = 0;
 	game_timer.Start();
 	restartLap = true;
+
+	lapTime = true;
 	//if (timer < 100) {
 	//	App->player->vehicle->Brake(BRAKE_POWER);
 	//	game_timer.Stop();
@@ -315,7 +317,8 @@ update_status ModulePlayer::Update(float dt)
 
 	//if(secExact !=0) lowtime_total = miliExact;
 
-	if (miliExact != 0)
+	//if (miliExact != 0)
+	if (!lapTime)
 	{
 		bestMinutes_f = minutes_f;
 		bestMinutes_i = minutes_i;
@@ -328,10 +331,11 @@ update_status ModulePlayer::Update(float dt)
 		notZero = true;
 	}
 
-	if (miliExact == 0 && notZero)
+	if (lapTime && notZero)
 	{
 		best_time = true;
 		notZero = false;
+		lapTime = false;
 	}
 
 	if (best_time == true)
@@ -344,7 +348,7 @@ update_status ModulePlayer::Update(float dt)
 			lowtime_min = bestMinutes_i;
 			lastBestTime = lowtime_total;
 		}
-		
+
 		if (lastBestTime == 0)
 		{
 			lowtime_mil = bestMiliseconds_i;
@@ -398,8 +402,8 @@ update_status ModulePlayer::Update(float dt)
 	}
 
 
-	if(lap)
-	{ 
+	if (lap)
+	{
 		RestartLap();
 		lap = false;
 		laps++;

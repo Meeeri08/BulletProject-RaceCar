@@ -294,9 +294,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body1 == barrier && !checkpointActiveFinal)
 	{
 
-		Cube wall7(32, 21, 1);
-		wall7.SetPos(0, 1, 2);
-		App->physics->AddBody(wall7, 0);
+		//Cube wall7(32, 21, 1);
+		//wall7.SetPos(0, 1, 2);
+		//App->physics->AddBody(wall7, 0);
 
 	}
 	
@@ -443,9 +443,9 @@ void ModuleSceneIntro::DrawCollisions()
 	App->physics->AddBody(wall24, 0);
 
 	///paret anti cheat
-	Cube wallAnti(2, 20, 100);
-	wallAnti.SetPos(-51, 15, 295);
-	App->physics->AddBody(wallAnti, 0);
+	//Cube wallAnti(2, 20, 100);
+	//wallAnti.SetPos(-51, 15, 295);
+	//App->physics->AddBody(wallAnti, 0);
 
 
 	///

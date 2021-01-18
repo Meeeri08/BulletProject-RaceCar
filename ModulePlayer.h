@@ -65,6 +65,7 @@ public:
 
 	bool restartLap = false;
 	int laps = 0;
+	bool lapTime = false;
 
 	bool notZero = false;
 	bool firstTime = false;
