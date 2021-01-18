@@ -74,6 +74,8 @@ public:
 	float posY;
 	float posZ;
 
+	btTransform reposition;
+
 	//Audio
 	uint jumpFx;
 	uint turboFx;

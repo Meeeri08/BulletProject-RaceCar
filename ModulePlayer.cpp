@@ -137,9 +137,9 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	//vehicle->SetPos(0, 2,7);
-	//vehicle->SetPos(0, 2, -12);
-	vehicle->SetPos(-100, 20, 490);
+	vehicle->SetPos(0, 0,7);
+	//vehicle->SetPos(0, 0, -12);
+	//vehicle->SetPos(-100, 20, 490);
 
 	game_timer.Start();
 
@@ -285,6 +285,12 @@ update_status ModulePlayer::Update(float dt)
 		turbo = true;
 		App->audio->PlayFx(turboFx);
 
+	}
+
+	if ((App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT))
+	{
+		vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+		vehicle->vehicle->getRigidBody()->setWorldTransform(reposition);
 	}
 
 

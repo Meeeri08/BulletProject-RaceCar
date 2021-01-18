@@ -112,8 +112,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->player->dead && !finishDead)
 	{
 
-		App->player->vehicle->SetPos(posX, posY, posZ);
 		//checkpointTaken1 = false;
+		App->player->vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+		App->player->vehicle->vehicle->getRigidBody()->setWorldTransform(App->player->reposition);
+
 		finishDead = true;
 	}
 
@@ -176,6 +178,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posY = App->player->posY;
 		posZ = App->player->posZ;
 		checkpointTaken0 = true;
+		App->player->reposition = App->player->vehicle->vehicle->getRigidBody()->getWorldTransform();
 
 	}
 	if (body1 == checkpoint_sensor1)
@@ -184,6 +187,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posY = App->player->posY;
 		posZ = App->player->posZ;
 		checkpointTaken1 = true;
+		App->player->reposition = App->player->vehicle->vehicle->getRigidBody()->getWorldTransform();
 
 	}	
 	if (body1 == checkpoint_sensor2)
@@ -192,6 +196,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posY = App->player->posY;
 		posZ = App->player->posZ;
 		checkpointTaken2 = true;
+		App->player->reposition = App->player->vehicle->vehicle->getRigidBody()->getWorldTransform();
 
 	}	
 	if (body1 == checkpoint_sensor3)
@@ -200,6 +205,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posY = App->player->posY;
 		posZ = App->player->posZ;
 		checkpointTaken3 = true;
+		App->player->reposition = App->player->vehicle->vehicle->getRigidBody()->getWorldTransform();
 
 	}
 
@@ -231,9 +237,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body1 == barrier && !checkpointActiveFinal)
 	{
 
-		//Cube wall7(32, 21, 1);
-		//wall7.SetPos(0, 1, 2);
-		//App->physics->AddBody(wall7, 0);
+		App->player->vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+		App->player->vehicle->SetPos(0, 0, 5);
 
 	}
 	
@@ -273,7 +278,7 @@ void ModuleSceneIntro::ColliderCheckpoints()
 
 
 	//checkpoint final
-	s.size = vec3(25, 1, 1);
+	s.size = vec3(25, 10, 1);
 	s.SetPos(0, 1, 0);
 
 	checkpoint_activeFinal = App->physics->AddBody(s, 0.0f);
@@ -281,7 +286,7 @@ void ModuleSceneIntro::ColliderCheckpoints()
 	checkpoint_activeFinal->collision_listeners.add(this);
 
 
-	s.size = vec3(25, 1, 1);
+	s.size = vec3(25, 10, 1);
 	s.SetPos(0, 1, 10);
 
 	checkpoint_final = App->physics->AddBody(s, 0.0f);
