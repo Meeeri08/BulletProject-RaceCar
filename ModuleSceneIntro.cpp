@@ -84,52 +84,9 @@ bool ModuleSceneIntro::Start()
 	jump_sensor4 = App->physics->AddBody(s, 0.0f);
 	jump_sensor4->SetSensor(true);
 	jump_sensor4->collision_listeners.add(this);
-	//Checkpoint 0
-	s.size = vec3(25, 1, 1);
-	s.SetPos(0, 2, 8);
-
-	checkpoint_sensor0 = App->physics->AddBody(s, 0.0f);
-	checkpoint_sensor0->SetSensor(true);
-	checkpoint_sensor0->collision_listeners.add(this);
-
-	//Checkpoints
-	s.size = vec3(10, 1, 1);
-	s.SetPos(80, 2, 70);
-
-	checkpoint_sensor1 = App->physics->AddBody(s, 0.0f);
-	checkpoint_sensor1->SetSensor(true);
-	checkpoint_sensor1->collision_listeners.add(this);
-
-
-	//checkpoint final
-	s.size = vec3(25, 1, 1);
-	s.SetPos(0, 1, 0);
-
-	checkpoint_activeFinal = App->physics->AddBody(s, 0.0f);
-	checkpoint_activeFinal->SetSensor(true);
-	checkpoint_activeFinal->collision_listeners.add(this);
-
-
-	s.size = vec3(25, 1, 1);
-	s.SetPos(0, 1, 10);
-
-	checkpoint_final = App->physics->AddBody(s, 0.0f);
-	checkpoint_final->SetSensor(true);
-	checkpoint_final->collision_listeners.add(this);
-
-
-	s.size = vec3(25, 20, 1);
-	s.SetPos(0, 1, 2);
-
-	barrier = App->physics->AddBody(s, 0.0f);
-	barrier->SetSensor(true);
-	barrier->collision_listeners.add(this);
-
-	/////POSAR IF PER CHECPOINT FINAL
-	//Cube wall7(32, 21, 1);
-	//wall7.SetPos(0, 1, 6);
-	//App->physics->AddBody(wall7, 0);
-
+	
+	
+	ColliderCheckpoints();
 
 	return ret;
 }
@@ -149,50 +106,17 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	DrawMap();
 
-	/*	if (!checkpointTaken0)
-		{
-			Cube checkpoint0(25, 1, 1);
-			checkpoint0.color.Set(0.0f, 0.0f, 1.0f);
-			checkpoint0.SetPos(0, 2, 18);
-			checkpoint0.Render();
-		}*/
+	DrawCheckpoints();
 
-	if (!checkpointTaken1)
-	{
-		Cube checkpoint1(10, 1, 1);
-		checkpoint1.color.Set(0.0f, 0.0f, 1.0f);
-		checkpoint1.SetPos(80, 2, 70);
-		checkpoint1.Render();
-	}
-
-	//if (!checkpointActiveFinal)
-	//{
-	//	Cube checkpoint_activeFinal(25, 1, 1);
-	//	checkpoint_activeFinal.color.Set(0.0f, 0.0f, 1.0f);
-	//	checkpoint_activeFinal.SetPos(0, 1, 0);
-	//	checkpoint_activeFinal.Render();
-	//}
-	//if (!checkpointFinalTaken1 && checkpointActiveFinal)
-	//{
-	//	Cube checkpoint_final(25, 1, 1);
-	//	checkpoint_final.color.Set(0.0f, 0.0f, 1.0f);
-	//	checkpoint_final.SetPos(0, 1, 9);
-	//	checkpoint_final.Render();
-	//}
 
 	if (App->player->dead && !finishDead)
 	{
 
 		App->player->vehicle->SetPos(posX, posY, posZ);
-		checkpointTaken1 = false;
+		//checkpointTaken1 = false;
 		finishDead = true;
 	}
 
-
-	/////POSAR IF PER CHECPOINT FINAL
-	//Cube wall7(32, 21, 1);
-	//wall7.SetPos(0, 1, 6);
-	//App->physics->AddBody(wall7, 0);
 
 	death_sensor->GetTransform(&s.transform);
 
@@ -222,13 +146,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body1 == death_sensor)
 	{
 		App->player->dead = true;
-		App->player->vehicle->SetPos(0, 2, 7);
-		/*posX = 0;
-		posY = 2;
-		posZ = 7;*/
-		/*	posX = App->player->posX;
-			posY = App->player->posY;
-			posZ = App->player->posZ;*/
+		App->player->vehicle->SetPos(posX, posY, posZ);
 
 	}
 	if (body1 == jump_sensor)
@@ -267,6 +185,22 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		posZ = App->player->posZ;
 		checkpointTaken1 = true;
 
+	}	
+	if (body1 == checkpoint_sensor2)
+	{
+		posX = App->player->posX;
+		posY = App->player->posY;
+		posZ = App->player->posZ;
+		checkpointTaken2 = true;
+
+	}	
+	if (body1 == checkpoint_sensor3)
+	{
+		posX = App->player->posX;
+		posY = App->player->posY;
+		posZ = App->player->posZ;
+		checkpointTaken3 = true;
+
 	}
 
 
@@ -286,8 +220,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		checkpointFinalTaken1 = true;
 		App->player->lap = true;
 		checkpointActiveFinal = false;
-		//App->player->Restart();
-		//App->player->dead = true;
+		checkpointTaken0 = false;
+		checkpointTaken1 = false;
+		checkpointTaken2 = false;
+		checkpointTaken3 = false;
+
 
 	}
 
@@ -300,6 +237,93 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 	}
 	
+}
+
+void ModuleSceneIntro::ColliderCheckpoints()
+{
+	//Checkpoint 0
+	s.size = vec3(25, 1, 1);
+	s.SetPos(0, 2, 8);
+
+	checkpoint_sensor0 = App->physics->AddBody(s, 0.0f);
+	checkpoint_sensor0->SetSensor(true);
+	checkpoint_sensor0->collision_listeners.add(this);
+
+	//Checkpoints
+	s.size = vec3(10, 1, 1);
+	s.SetPos(80, 2, 70);
+
+	checkpoint_sensor1 = App->physics->AddBody(s, 0.0f);
+	checkpoint_sensor1->SetSensor(true);
+	checkpoint_sensor1->collision_listeners.add(this);
+
+	s.size = vec3(1, 1, 3);
+	s.SetPos(-20, 12, 440);
+
+	checkpoint_sensor2 = App->physics->AddBody(s, 0.0f);
+	checkpoint_sensor2->SetSensor(true);
+	checkpoint_sensor2->collision_listeners.add(this);
+
+	s.size = vec3(3, 1, 1);
+	s.SetPos(-100, 12, 600);
+
+	checkpoint_sensor3 = App->physics->AddBody(s, 0.0f);
+	checkpoint_sensor3->SetSensor(true);
+	checkpoint_sensor3->collision_listeners.add(this);
+
+
+	//checkpoint final
+	s.size = vec3(25, 1, 1);
+	s.SetPos(0, 1, 0);
+
+	checkpoint_activeFinal = App->physics->AddBody(s, 0.0f);
+	checkpoint_activeFinal->SetSensor(true);
+	checkpoint_activeFinal->collision_listeners.add(this);
+
+
+	s.size = vec3(25, 1, 1);
+	s.SetPos(0, 1, 10);
+
+	checkpoint_final = App->physics->AddBody(s, 0.0f);
+	checkpoint_final->SetSensor(true);
+	checkpoint_final->collision_listeners.add(this);
+
+
+	s.size = vec3(25, 20, 1);
+	s.SetPos(0, 1, 2);
+
+	barrier = App->physics->AddBody(s, 0.0f);
+	barrier->SetSensor(true);
+	barrier->collision_listeners.add(this);
+}
+
+void ModuleSceneIntro::DrawCheckpoints()
+{
+	//checkpoints draw
+	if (!checkpointTaken1)
+	{
+		Cube checkpoint1(10, 1, 1);
+		checkpoint1.color.Set(0.0f, 0.0f, 1.0f);
+		checkpoint1.SetPos(80, 2, 70);
+		checkpoint1.Render();
+	}
+
+	if (!checkpointTaken2)
+	{
+		Cube checkpoint2(1, 1, 3);
+		checkpoint2.color.Set(0.0f, 0.0f, 1.0f);
+		checkpoint2.SetPos(-20, 12, 440);
+		checkpoint2.Render();
+	}
+
+	if (!checkpointTaken3)
+	{
+		Cube checkpoint3(3, 1, 1);
+		checkpoint3.color.Set(0.0f, 0.0f, 1.0f);
+		checkpoint3.SetPos(-100, 12, 600);
+		checkpoint3.Render();
+	}
+
 }
 
 void ModuleSceneIntro::DrawCollisions()

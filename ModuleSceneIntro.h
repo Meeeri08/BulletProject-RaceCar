@@ -23,6 +23,8 @@ public:
 
 	void CreateCube(vec3 dimensions, vec3 pos, int rot = 0, vec3 vecRot = { 0,0,0 });
 	void DrawMap();
+	void DrawCheckpoints();
+	void ColliderCheckpoints();
 	void DrawCollisions();
 
 public:
@@ -54,6 +56,8 @@ public:
 	//checkpoints
 	PhysBody3D* checkpoint_sensor0 = nullptr;
 	PhysBody3D* checkpoint_sensor1 = nullptr;
+	PhysBody3D* checkpoint_sensor2 = nullptr;
+	PhysBody3D* checkpoint_sensor3 = nullptr;
 
 	PhysBody3D* checkpoint_activeFinal = nullptr;
 	PhysBody3D* checkpoint_final = nullptr;
@@ -62,6 +66,8 @@ public:
 	bool checkpoint = false;
 	bool checkpointTaken0 = false;
 	bool checkpointTaken1 = false;
+	bool checkpointTaken2 = false;
+	bool checkpointTaken3 = false;
 
 	bool checkpointActiveFinal = false;
 	bool checkpointFinalTaken1 = false;
