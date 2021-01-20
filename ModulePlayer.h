@@ -80,5 +80,6 @@ public:
 	uint jumpFx;
 	uint turboFx;
 	uint deadFx;
+	uint lapFx;
 
 };
