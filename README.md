@@ -7,19 +7,19 @@ In this Racing Car game you have to finish 3 laps in the less possible time. Alo
 you will have to avoid obstacles and show off your driving skills.
 
 ## Controls
-W -> Go foward
-S -> Go backward
-A -> Turn left
-D -> Turn right
-SPACE BAR -> Break
-M -> Jump
-Q -> Turbo
-R -> Restart from last checkpoint
-C -> Play again if won
+- W -> Go foward
+- S -> Go backward
+- A -> Turn left
+- D -> Turn right
+- SPACE BAR -> Break
+- M -> Jump
+- Q -> Turbo
+- R -> Restart from last checkpoint
+- C -> Play again if won
 
 ## Debug Features
-F1 -> See all the colliders
-ESC -> Exit game
+- F1 -> See all the colliders
+- ESC -> Exit game
 
 ## Key Features
 - Circuit with obstacles and jumps
