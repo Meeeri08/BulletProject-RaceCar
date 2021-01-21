@@ -34,8 +34,8 @@ bool ModuleSceneIntro::Start()
 
 	//death sensor
 	/////////////////////////////////////////////////
-	s.size = vec3(300, 1, 697);
-	s.SetPos(0, 5, 500);
+	s.size = vec3(300, 1, 650);
+	s.SetPos(0, 2, 500);
 
 	death_sensor = App->physics->AddBody(s, 0.0f);
 	death_sensor->SetSensor(true);
@@ -56,7 +56,7 @@ bool ModuleSceneIntro::Start()
 
 
 	s.size = vec3(25, 2, 150);
-	s.SetPos(80, 12, 210);
+	s.SetPos(80, 7, 210);
 
 	jump_sensor1 = App->physics->AddBody(s, 0.0f);
 	jump_sensor1->SetSensor(true);
@@ -64,7 +64,7 @@ bool ModuleSceneIntro::Start()
 
 
 	s.size = vec3(25, 15, 2);
-	s.SetPos(-100, 13, 580);
+	s.SetPos(-100, 8, 580);
 
 	jump_sensor2 = App->physics->AddBody(s, 0.0f);
 	jump_sensor2->SetSensor(true);
@@ -72,7 +72,7 @@ bool ModuleSceneIntro::Start()
 
 
 	s.size = vec3(20, 2, 50);
-	s.SetPos(-100, 12, 500);
+	s.SetPos(-100, 7, 500);
 
 	jump_sensor3 = App->physics->AddBody(s, 0.0f);
 	jump_sensor3->SetSensor(true);
@@ -115,7 +115,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		//checkpointTaken1 = false;
 		App->player->vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 		App->player->vehicle->vehicle->getRigidBody()->setWorldTransform(App->player->reposition);
-
+		jumpEnabled = true;
 		finishDead = true;
 	}
 
@@ -263,14 +263,14 @@ void ModuleSceneIntro::ColliderCheckpoints()
 	checkpoint_sensor1->collision_listeners.add(this);
 
 	s.size = vec3(1, 1, 3);
-	s.SetPos(-20, 12, 440);
+	s.SetPos(-20, 7, 440);
 
 	checkpoint_sensor2 = App->physics->AddBody(s, 0.0f);
 	checkpoint_sensor2->SetSensor(true);
 	checkpoint_sensor2->collision_listeners.add(this);
 
 	s.size = vec3(3, 1, 1);
-	s.SetPos(-100, 12, 600);
+	s.SetPos(-100, 7, 600);
 
 	checkpoint_sensor3 = App->physics->AddBody(s, 0.0f);
 	checkpoint_sensor3->SetSensor(true);
@@ -317,7 +317,7 @@ void ModuleSceneIntro::DrawCheckpoints()
 	{
 		Cube checkpoint2(1, 1, 3);
 		checkpoint2.color.Set(0.0f, 0.0f, 1.0f);
-		checkpoint2.SetPos(-20, 12, 440);
+		checkpoint2.SetPos(-20, 7, 440);
 		checkpoint2.Render();
 	}
 
@@ -325,7 +325,7 @@ void ModuleSceneIntro::DrawCheckpoints()
 	{
 		Cube checkpoint3(3, 1, 1);
 		checkpoint3.color.Set(0.0f, 0.0f, 1.0f);
-		checkpoint3.SetPos(-100, 12, 600);
+		checkpoint3.SetPos(-100, 7, 600);
 		checkpoint3.Render();
 	}
 
@@ -333,6 +333,9 @@ void ModuleSceneIntro::DrawCheckpoints()
 
 void ModuleSceneIntro::DrawCollisions()
 {
+	Cube wall100(165, 20, 2);
+	wall100.SetPos(-20, 10, 180);
+	App->physics->AddBody(wall100, 0);
 
 	//Collisions
 	Cube wallGround(290, 1, 600);
@@ -450,26 +453,26 @@ void ModuleSceneIntro::DrawCollisions()
 	App->physics->AddBody(ramp1, 0);
 
 	//hight walls
-	Cube wall20(2, 30, 180);
-	wall20.SetPos(95, 10, 185);
+	Cube wall20(2, 50, 180);
+	wall20.SetPos(95, 15, 185);
 	App->physics->AddBody(wall20, 0);
 
-	Cube wall21(2, 30, 150);
-	wall21.SetPos(65, 10, 170);
+	Cube wall21(2, 50, 150);
+	wall21.SetPos(65, 15, 170);
 	App->physics->AddBody(wall21, 0);
 
 	//floating ground
-	Cube wall22(30, 2, 150);
-	wall22.SetPos(80, 10, 195);
+	Cube wall22(30, 2, 160);
+	wall22.SetPos(80, 5, 185);
 	App->physics->AddBody(wall22, 0);
 
 	Cube wall23(120, 2, 30);
-	wall23.SetPos(40, 10, 260);
+	wall23.SetPos(40, 5, 260);
 	App->physics->AddBody(wall23, 0);
 
 
 	Cube wall24(30, 2, 100);
-	wall24.SetPos(-35, 10, 295);
+	wall24.SetPos(-35, 5, 295);
 	App->physics->AddBody(wall24, 0);
 
 	///paret anti cheat
@@ -481,68 +484,67 @@ void ModuleSceneIntro::DrawCollisions()
 	///
 
 	Cube wall25(10, 2, 100);
-	wall25.SetPos(-35, 10, 395);
+	wall25.SetPos(-35, 5, 395);
 	App->physics->AddBody(wall25, 0);
 
 	Cube wall26(80, 2, 10);
-	wall26.SetPos(0, 10, 440);
+	wall26.SetPos(0, 5, 440);
 	App->physics->AddBody(wall26, 0);
 
 	Cube wall27(10, 2, 100);
-	wall27.SetPos(40, 10, 485);
+	wall27.SetPos(40, 5, 485);
 	App->physics->AddBody(wall27, 0);
 
 	Cube wall28(10, 2, 110);
-	wall28.SetPos(40, 10, 620);
+	wall28.SetPos(40, 5, 620);
 	App->physics->AddBody(wall28, 0);
 
 	Cube wall29(70, 2, 10);
-	wall29.SetPos(10, 10, 675);
+	wall29.SetPos(10, 5, 675);
 	App->physics->AddBody(wall29, 0);
 
 	Cube wall30(50, 2, 10);
-	wall30.SetPos(-70, 10, 675);
+	wall30.SetPos(-70, 5, 675);
 	App->physics->AddBody(wall30, 0);
 
 	Cube wall31(10, 2, 70);
-	wall31.SetPos(-100, 10, 645);
+	wall31.SetPos(-100, 5, 645);
 	App->physics->AddBody(wall31, 0);
 
 	Cube wall32(40, 2, 10);
-	wall32.SetPos(-100, 10, 605);
-	wall32.Render();
+	wall32.SetPos(-100, 5, 605);
 	App->physics->AddBody(wall32, 0);
 
 	Cube ramp2(10, 15, 0.5);
 	ramp2.SetRotation(90 + 8, { 1,0,0 });
-	ramp2.SetPos(-100, 11.8, 593);
+	ramp2.SetPos(-100, 6.8, 593);
 	App->physics->AddBody(ramp2, 0);
 
 	Cube wall33(10, 2, 90);
-	wall33.SetPos(-125, 10, 565);
+	wall33.SetPos(-125, 5, 565);
 	App->physics->AddBody(wall33, 0);
 
 	Cube wall34(10, 2, 90);
-	wall34.SetPos(-75, 10, 565);
+	wall34.SetPos(-75, 5, 565);
 	App->physics->AddBody(wall34, 0);
 
 	Cube wall35(40, 2, 10);
-	wall35.SetPos(-100, 10, 525);
+	wall35.SetPos(-100, 5, 525);
 	App->physics->AddBody(wall35, 0);
 
 	Cube wall36(10, 2, 50);
-	wall36.SetPos(-100, 10, 495);
+	wall36.SetPos(-100, 5, 495);
 	App->physics->AddBody(wall36, 0);
 
 
 	///parkour
 
 	Cube wall37(20, 2, 30);
-	wall37.SetPos(-100, 10, 430);
+	wall37.SetPos(-100, 5, 430);
 	App->physics->AddBody(wall37, 0);
 
 	Cube wall38(20, 2, 35);
-	wall38.SetPos(-100, 10, 375);
+	wall38.SetPos(-100, 5, 375);
 	App->physics->AddBody(wall38, 0);
 
 	/*Cube wall39(20, 2, 20);
@@ -551,71 +553,71 @@ void ModuleSceneIntro::DrawCollisions()
 
 	////
 	Cube wall40(20, 2, 30);
-	wall40.SetPos(-100, 10, 325);
+	wall40.SetPos(-100, 5, 325);
 	App->physics->AddBody(wall40, 0);
 
 
 	Cube wall41(60, 2, 80);
-	wall41.SetPos(-100, 10, 270);
+	wall41.SetPos(-100, 5, 270);
 	App->physics->AddBody(wall41, 0);
 
 	///pivots
 	Cube pivot1(5, 20, 5);
-	pivot1.SetPos(-100, 20, 280);
+	pivot1.SetPos(-100, 15, 280);
 	App->physics->AddBody(pivot1, 0);
 
 	Cube pivot2(5, 20, 5);
-	pivot2.SetPos(-110, 20, 270);
+	pivot2.SetPos(-110, 15, 270);
 	App->physics->AddBody(pivot2, 0);
 
 	Cube pivot3(5, 20, 5);
-	pivot3.SetPos(-90, 20, 295);
+	pivot3.SetPos(-90, 15, 295);
 	App->physics->AddBody(pivot3, 0);
 
 	Cube pivot4(5, 20, 5);
-	pivot4.SetPos(-115, 20, 250);
+	pivot4.SetPos(-115, 15, 250);
 	App->physics->AddBody(pivot4, 0);
 
 	Cube pivot5(5, 20, 5);
-	pivot5.SetPos(-85, 20, 260);
+	pivot5.SetPos(-85, 15, 260);
 	App->physics->AddBody(pivot5, 0);
 
 	Cube pivot6(5, 20, 5);
-	pivot6.SetPos(-120, 20, 295);
+	pivot6.SetPos(-120, 15, 295);
 	App->physics->AddBody(pivot6, 0);
 
 	Cube pivot7(5, 20, 5);
-	pivot7.SetPos(-80, 20, 245);
+	pivot7.SetPos(-80, 15, 245);
 	App->physics->AddBody(pivot7, 0);
 
 	Cube pivot8(5, 20, 5);
-	pivot8.SetPos(-110, 20, 240);
+	pivot8.SetPos(-110, 15, 240);
 	App->physics->AddBody(pivot8, 0);
 
 	Cube pivot9(5, 20, 5);
-	pivot9.SetPos(-115, 20, 285);
+	pivot9.SetPos(-115, 15, 285);
 	App->physics->AddBody(pivot9, 0);
 
 	Cube pivot10(5, 20, 5);
-	pivot10.SetPos(-90, 20, 270);
+	pivot10.SetPos(-90, 15, 270);
 	App->physics->AddBody(pivot10, 0);
 
 	Cube pivot11(5, 20, 5);
-	pivot11.SetPos(-88, 20, 250);
+	pivot11.SetPos(-88, 15, 250);
 	App->physics->AddBody(pivot11, 0);
 
 
 	Cube wall42(10, 2, 50);
-	wall42.SetPos(-120, 10, 205);
+	wall42.SetPos(-120, 5, 205);
 	App->physics->AddBody(wall42, 0);
 
 
 	Cube ramp3(30, 60, 1);
 	ramp3.SetRotation(90 - 10, { 1,0,0 });
-	ramp3.SetPos(-120, 5, 150);
+	ramp3.SetPos(-120, 0, 150);
 	App->physics->AddBody(ramp3, 0);
 
-
+	//////
 	Cube wall43(2, 30, 230);
 	wall43.SetPos(-105, 0, 65);
 	App->physics->AddBody(wall43, 0);
@@ -1212,116 +1214,116 @@ void ModuleSceneIntro::DrawMap()
 	ramp1.Render();
 
 	//high walls
-	Cube wall20(2, 30, 180);
+	Cube wall20(2, 50, 180);
 	wall20.color.Set(1.0f, 0.0f, 1.0f);
-	wall20.SetPos(95, 10, 185);
+	wall20.SetPos(95, 15, 185);
 	wall20.Render();
 
-	Cube wall21(2, 30, 150);
+	Cube wall21(2, 50, 150);
 	wall21.color.Set(1.0f, 0.0f, 1.0f);
-	wall21.SetPos(65, 10, 170);
+	wall21.SetPos(65, 15, 170);
 	wall21.Render();
 
 	//floating ground
-	Cube wall22(30, 2, 150);
+	Cube wall22(30, 2, 160);
 	wall22.color.Set(0.6f, 0.2f, 1.0f);
-	wall22.SetPos(80, 10, 195);
+	wall22.SetPos(80, 5, 185);
 	wall22.Render();
 
 	Cube wall23(120, 2, 30);
 	wall23.color.Set(0.6f, 0.2f, 1.0f);
-	wall23.SetPos(40, 10, 260);
+	wall23.SetPos(40, 5, 260);
 	wall23.Render();
 
 	Cube wall24(30, 2, 100);
 	wall24.color.Set(0.6f, 0.2f, 1.0f);
-	wall24.SetPos(-35, 10, 295);
+	wall24.SetPos(-35, 5, 295);
 	wall24.Render();
 
 	///anticheat wall
 	Cube wallAnti(2, 20, 100);
 	wallAnti.color.Set(1.0f, 0.0f, 1.0f);
-	wallAnti.SetPos(-51, 15, 295);
+	wallAnti.SetPos(-51, 10, 295);
 	wallAnti.Render();
 	///
 
 	Cube wall25(10, 2, 100);
 	wall25.color.Set(0.6f, 0.2f, 1.0f);
-	wall25.SetPos(-35, 10, 395);
+	wall25.SetPos(-35, 5, 395);
 	wall25.Render();
 
 	Cube wall26(80, 2, 10);
 	wall26.color.Set(0.6f, 0.2f, 1.0f);
-	wall26.SetPos(0, 10, 440);
+	wall26.SetPos(0, 5, 440);
 	wall26.Render();
 
 	Cube wall27(10, 2, 100);
 	wall27.color.Set(0.6f, 0.2f, 1.0f);
-	wall27.SetPos(40, 10, 485);
+	wall27.SetPos(40, 5, 485);
 	wall27.Render();
 
 	Cube wall28(10, 2, 110);
 	wall28.color.Set(0.6f, 0.2f, 1.0f);
-	wall28.SetPos(40, 10, 620);
+	wall28.SetPos(40, 5, 620);
 	wall28.Render();
 
 	Cube wall29(70, 2, 10);
 	wall29.color.Set(0.6f, 0.2f, 1.0f);
-	wall29.SetPos(10, 10, 675);
+	wall29.SetPos(10, 5, 675);
 	wall29.Render();
 
 	Cube wall30(50, 2, 10);
 	wall30.color.Set(0.6f, 0.2f, 1.0f);
-	wall30.SetPos(-70, 10, 675);
+	wall30.SetPos(-70, 5, 675);
 	wall30.Render();
 
 	Cube wall31(10, 2, 70);
 	wall31.color.Set(0.6f, 0.2f, 1.0f);
-	wall31.SetPos(-100, 10, 645);
+	wall31.SetPos(-100, 5, 645);
 	wall31.Render();
 
 	Cube wall32(40, 2, 10);
 	wall32.color.Set(0.6f, 0.2f, 1.0f);
-	wall32.SetPos(-100, 10, 605);
+	wall32.SetPos(-100, 5, 605);
 	wall32.Render();
 
 
 	Cube ramp2(10, 15, 0.5);
 	ramp2.color.Set(0.4f, 1.0f, 1.0f);
 	ramp2.SetRotation(90 + 8, { 1,0,0 });
-	ramp2.SetPos(-100, 11.8, 593);
+	ramp2.SetPos(-100, 6.8, 593);
 	ramp2.Render();
 
 	Cube wall33(10, 2, 90);
 	wall33.color.Set(0.6f, 0.2f, 1.0f);
-	wall33.SetPos(-125, 10, 565);
+	wall33.SetPos(-125, 5, 565);
 	wall33.Render();
 
 	Cube wall34(10, 2, 90);
 	wall34.color.Set(0.6f, 0.2f, 1.0f);
-	wall34.SetPos(-75, 10, 565);
+	wall34.SetPos(-75, 5, 565);
 	wall34.Render();
 
 	Cube wall35(40, 2, 10);
 	wall35.color.Set(0.6f, 0.2f, 1.0f);
-	wall35.SetPos(-100, 10, 525);
+	wall35.SetPos(-100, 5, 525);
 	wall35.Render();
 
 	Cube wall36(10, 2, 50);
 	wall36.color.Set(0.6f, 0.2f, 1.0f);
-	wall36.SetPos(-100, 10, 495);
+	wall36.SetPos(-100, 5, 495);
 	wall36.Render();
 
 	///parkour
 
 	Cube wall37(20, 2, 30);
 	wall37.color.Set(0.6f, 0.2f, 1.0f);
-	wall37.SetPos(-100, 10, 430);
+	wall37.SetPos(-100, 5, 430);
 	wall37.Render();
 
 	Cube wall38(20, 2, 35);
 	wall38.color.Set(0.6f, 0.2f, 1.0f);
-	wall38.SetPos(-100, 10, 375);
+	wall38.SetPos(-100, 5, 375);
 	wall38.Render();
 
 	//Cube wall39(20, 2, 20);
@@ -1333,81 +1335,81 @@ void ModuleSceneIntro::DrawMap()
 
 	Cube wall40(20, 2, 30);
 	wall40.color.Set(0.6f, 0.2f, 1.0f);
-	wall40.SetPos(-100, 10, 325);
+	wall40.SetPos(-100, 5, 325);
 	wall40.Render();
 
 	Cube wall41(60, 2, 80);
 	wall41.color.Set(0.6f, 0.2f, 1.0f);
-	wall41.SetPos(-100, 10, 270);
+	wall41.SetPos(-100, 5, 270);
 	wall41.Render();
 
 	////pivots
 	Cube pivot1(5, 20, 5);
 	pivot1.color.Set(0.0f, 1.0f, 0.0f);
-	pivot1.SetPos(-100, 20, 280);
+	pivot1.SetPos(-100, 15, 280);
 	pivot1.Render();
 
 	Cube pivot2(5, 20, 5);
 	pivot2.color.Set(0.0f, 1.0f, 0.0f);
-	pivot2.SetPos(-110, 20, 270);
+	pivot2.SetPos(-110, 15, 270);
 	pivot2.Render();
 
 	Cube pivot3(5, 20, 5);
 	pivot3.color.Set(0.0f, 1.0f, 0.0f);
-	pivot3.SetPos(-90, 20, 295);
+	pivot3.SetPos(-90, 15, 295);
 	pivot3.Render();
 
 	Cube pivot4(5, 20, 5);
 	pivot4.color.Set(0.0f, 1.0f, 0.0f);
-	pivot4.SetPos(-115, 20, 250);
+	pivot4.SetPos(-115, 15, 250);
 	pivot4.Render();
 
 	Cube pivot5(5, 20, 5);
 	pivot5.color.Set(0.0f, 1.0f, 0.0f);
-	pivot5.SetPos(-85, 20, 260);
+	pivot5.SetPos(-85, 15, 260);
 	pivot5.Render();
 
 	Cube pivot6(5, 20, 5);
 	pivot6.color.Set(0.0f, 1.0f, 0.0f);
-	pivot6.SetPos(-120, 20, 295);
+	pivot6.SetPos(-120, 15, 295);
 	pivot6.Render();
 
 	Cube pivot7(5, 20, 5);
 	pivot7.color.Set(0.0f, 1.0f, 0.0f);
-	pivot7.SetPos(-80, 20, 245);
+	pivot7.SetPos(-80, 15, 245);
 	pivot7.Render();
 
 	Cube pivot8(5, 20, 5);
 	pivot8.color.Set(0.0f, 1.0f, 0.0f);
-	pivot8.SetPos(-110, 20, 240);
+	pivot8.SetPos(-110, 15, 240);
 	pivot8.Render();
 
 	Cube pivot9(5, 20, 5);
 	pivot9.color.Set(0.0f, 1.0f, 0.0f);
-	pivot9.SetPos(-115, 20, 285);
+	pivot9.SetPos(-115, 15, 285);
 	pivot9.Render();
 
 	Cube pivot10(5, 20, 5);
 	pivot10.color.Set(0.0f, 1.0f, 0.0f);
-	pivot10.SetPos(-90, 20, 270);
+	pivot10.SetPos(-90, 15, 270);
 	pivot10.Render();
 
 	Cube pivot11(5, 20, 5);
 	pivot11.color.Set(0.0f, 1.0f, 0.0f);
-	pivot11.SetPos(-88, 20, 250);
+	pivot11.SetPos(-88, 15, 250);
 	pivot11.Render();
 
 
 	Cube wall42(10, 2, 50);
 	wall42.color.Set(0.6f, 0.2f, 1.0f);
-	wall42.SetPos(-120, 10, 205);
+	wall42.SetPos(-120, 5, 205);
 	wall42.Render();
 
 
 	Cube ramp3(30, 60, 1);
 	ramp3.color.Set(0.4f, 1.0f, 1.0f);
 	ramp3.SetRotation(90 - 10, { 1,0,0 });
-	ramp3.SetPos(-120, 5, 150);
+	ramp3.SetPos(-120, 0, 150);
 	ramp3.Render();
 
 	Cube wall43(2, 30, 230);

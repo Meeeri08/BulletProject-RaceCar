@@ -182,18 +182,7 @@ void ModulePlayer::RestartLap()
 	restartLap = true;
 
 	lapTime = true;
-	//if (timer < 100) {
-	//	App->player->vehicle->Brake(BRAKE_POWER);
-	//	game_timer.Stop();
-	//}
-	//else
-	//{
-	//	game_timer.Start();
-	//	timer = 0;
 
-	//	//App->scene_intro->finishDead = false;
-	//}
-	//timer++;
 }
 
 void ModulePlayer::RestartGame()
@@ -220,30 +209,7 @@ update_status ModulePlayer::Update(float dt)
 	posY = vehicle->getPosY();
 	posZ = vehicle->getPosZ();
 
-	//if (turboUp)
-	//{
-	//	Cube prova(1, 1, 1);
-	//	prova.color.Set(1.0f, 1.0f, 1.0f);
-	//	prova.SetPos(vehicle->getPosX(), vehicle->getPosY() + 5, vehicle->getPosZ());
-	//	prova.Render();
-	//}
-	//else
-	//{
-	//	Cube prova(1, 1, 1);
-	//	prova.color.Set(1.0f, 0.5f, 1.0f);
-	//	prova.SetPos(vehicle->getPosX(), vehicle->getPosY() + 5, vehicle->getPosZ());
-	//	prova.Render();
-	//}
-	//if (turboUp)
-	//{
-	//	Cube prova(1, 1, 1);
-	//	prova.color.Set(1.0f, 1.0f, 1.0f);
-	//	prova.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-	//	prova.Render();
-	//}
-	//else
-	//{
-	//}
+
 	if (laps < 3)
 	{
 		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && (VehicleVelocity <= SPEED_LIMIT))
@@ -315,14 +281,6 @@ update_status ModulePlayer::Update(float dt)
 			win = false;
 		}
 
-	}
-
-
-
-	if ((App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT))
-	{
-		vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
-		vehicle->vehicle->getRigidBody()->setWorldTransform(reposition);
 	}
 
 	if (dead == true)
@@ -454,5 +412,7 @@ update_status ModulePlayer::Update(float dt)
 		lap = false;
 		laps++;
 	}
+
+
 	return UPDATE_CONTINUE;
 }
