@@ -385,6 +385,7 @@ void ModuleSceneIntro::DrawCollisions()
 	App->physics->AddBody(sphere4, 0);
 
 	//circuit
+
 	Cube wall5(2, 30, 100);
 	wall5.SetPos(-15, 0, 30);
 	App->physics->AddBody(wall5, 0);

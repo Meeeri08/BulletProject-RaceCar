@@ -53,6 +53,7 @@ public:
 	PhysBody3D* jump_sensor2 = nullptr;
 	PhysBody3D* jump_sensor3 = nullptr;
 	PhysBody3D* jump_sensor4 = nullptr;
+
 	//checkpoints
 	PhysBody3D* checkpoint_sensor0 = nullptr;
 	PhysBody3D* checkpoint_sensor1 = nullptr;
@@ -71,7 +72,6 @@ public:
 
 	bool checkpointActiveFinal = false;
 	bool checkpointFinalTaken1 = false;
-
 
 	float posX;
 	float posY;

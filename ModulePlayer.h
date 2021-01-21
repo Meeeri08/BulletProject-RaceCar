@@ -21,8 +21,9 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
-	void Restart();
+	void RestartDead();
 	void RestartLap();
+	void RestartGame();
 
 public:
 	Timer jump_cooldown;
@@ -53,7 +54,7 @@ public:
 	bool turboWait = false;
 	int timeTurbo = 1;
 
-
+	bool gameend = false;
 
 	float bestMinutes_f;
 	int bestMinutes_i;
@@ -81,5 +82,5 @@ public:
 	uint turboFx;
 	uint deadFx;
 	uint lapFx;
-
+	uint winFx;
 };

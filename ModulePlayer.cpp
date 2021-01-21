@@ -24,6 +24,7 @@ bool ModulePlayer::Start()
 	turboFx = App->audio->LoadFx("Assets/turbo.wav");
 	deadFx = App->audio->LoadFx("Assets/dead.wav");
 	lapFx = App->audio->LoadFx("Assets/lap_end.wav");
+	winFx = App->audio->LoadFx("Assets/win.wav");
 
 	VehicleInfo car;
 	// Car properties ----------------------------------------
@@ -141,7 +142,7 @@ bool ModulePlayer::Start()
 	vehicle->SetPos(0, 0,7);
 	//vehicle->SetPos(0, 0, -12);
 	//vehicle->SetPos(-100, 20, 490);
-
+	laps = 0;
 	game_timer.Start();
 
 	return true;
@@ -155,7 +156,7 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-void ModulePlayer::Restart()
+void ModulePlayer::RestartDead()
 {
 	if (timer < 100) {
 		App->player->vehicle->Brake(BRAKE_POWER);
@@ -195,6 +196,17 @@ void ModulePlayer::RestartLap()
 	//timer++;
 }
 
+void ModulePlayer::RestartGame()
+{
+	laps = 0;
+	vehicle->SetPos(0, 0, 7);
+	game_timer.Stop();
+	timer = 0;
+	game_timer.Start();
+	restartLap = true;
+	dead = false;
+	lapTime = true;
+}
 
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
@@ -207,7 +219,6 @@ update_status ModulePlayer::Update(float dt)
 	posX = vehicle->getPosX();
 	posY = vehicle->getPosY();
 	posZ = vehicle->getPosZ();
-
 
 	//if (turboUp)
 	//{
@@ -223,7 +234,6 @@ update_status ModulePlayer::Update(float dt)
 	//	prova.SetPos(vehicle->getPosX(), vehicle->getPosY() + 5, vehicle->getPosZ());
 	//	prova.Render();
 	//}
-
 	//if (turboUp)
 	//{
 	//	Cube prova(1, 1, 1);
@@ -233,59 +243,81 @@ update_status ModulePlayer::Update(float dt)
 	//}
 	//else
 	//{
-
 	//}
-
-
-	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && (VehicleVelocity <= SPEED_LIMIT))
+	if (laps < 3)
 	{
-		if (vehicle->GetKmh() < -3)
-			brake = BRAKE_POWER;
-		acceleration = MAX_ACCELERATION;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		if (turn < TURN_DEGREES)
-			turn += TURN_DEGREES;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		if (turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
-	}
-
-	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) && (VehicleVelocity >= -SPEED_LIMIT))
-	{
-		if (vehicle->GetKmh() > 5)
-			brake = BRAKE_POWER;
-		acceleration = -MAX_ACCELERATION;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-		brake = BRAKE_POWER;
-	}
-
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && App->scene_intro->jumpEnabled)
-	{
-
-		if ((jump_cooldown.Read() * 0.001) >= JUMP_COOLDOWN)
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) && (VehicleVelocity <= SPEED_LIMIT))
 		{
-			vehicle->Push(0.0f, JUMP_IMPULSE, 0.0f);
-			jump_cooldown.Start();
-			App->audio->PlayFx(jumpFx);
+			if (vehicle->GetKmh() < -3)
+				brake = BRAKE_POWER;
+			acceleration = MAX_ACCELERATION;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			if (turn > -TURN_DEGREES)
+				turn -= TURN_DEGREES;
+		}
+
+		if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) && (VehicleVelocity >= -SPEED_LIMIT))
+		{
+			if (vehicle->GetKmh() > 5)
+				brake = BRAKE_POWER;
+			acceleration = -MAX_ACCELERATION;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+			brake = BRAKE_POWER;
+		}
+
+
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && App->scene_intro->jumpEnabled)
+		{
+
+			if ((jump_cooldown.Read() * 0.001) >= JUMP_COOLDOWN)
+			{
+				vehicle->Push(0.0f, JUMP_IMPULSE, 0.0f);
+				jump_cooldown.Start();
+				App->audio->PlayFx(jumpFx);
+			}
+		}
+
+		//turbo
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !turboWait)
+		{
+			turbo = true;
+			App->audio->PlayFx(turboFx);
+
+		}
+
+		if ((App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT))
+		{
+			vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+			vehicle->vehicle->getRigidBody()->setWorldTransform(reposition);
 		}
 	}
-
-	//turbo
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !turboWait)
+	else
 	{
-		turbo = true;
-		App->audio->PlayFx(turboFx);
+		brake = BRAKE_POWER;
+		gameend = true;
+		win = true;
+
+		if ((App->input->GetKey(SDL_SCANCODE_C) == KEY_REPEAT))
+		{
+			RestartGame();
+			gameend = false;
+			win = false;
+		}
 
 	}
+
+
 
 	if ((App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT))
 	{
@@ -293,10 +325,9 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->vehicle->getRigidBody()->setWorldTransform(reposition);
 	}
 
-
 	if (dead == true)
 	{
-		Restart();
+		RestartDead();
 		App->audio->PlayFx(deadFx);
 	}
 
@@ -383,6 +414,12 @@ update_status ModulePlayer::Update(float dt)
 		sprintf_s(title, " Time: %i:%2.i:%4.i        Velocity: %4.1f Km/h       Best Time: %i:%i:%i", minutes_i, seconds_i, miliseconds_i, vehicle->GetKmh(), lowtime_min, lowtime_sec, lowtime_mil);
 		App->window->SetTitle(title);
 	}
+	if (gameend)
+	{
+		char title[120];
+		sprintf_s(title, "Best Time: %i:%i:%i                         YOU WIN                                      PRESS C TO CONTINUE", lowtime_min, lowtime_sec, lowtime_mil);
+		App->window->SetTitle(title);
+	}
 	if (turbo)
 	{
 		timerTurbo = secExact + timeTurbo;
@@ -412,15 +449,10 @@ update_status ModulePlayer::Update(float dt)
 	if (lap)
 	{
 		RestartLap();
-		App->audio->PlayFx(lapFx);
+		if(laps < 2) App->audio->PlayFx(lapFx);
+		else App->audio->PlayFx(winFx);
 		lap = false;
 		laps++;
 	}
-
-
-
-
-
-
 	return UPDATE_CONTINUE;
 }
