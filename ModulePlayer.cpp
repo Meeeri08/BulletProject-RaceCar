@@ -391,6 +391,10 @@ update_status ModulePlayer::Update(float dt)
 		if (secExact <= timerTurbo + timeTurbo * 2)
 		{
 			vehicle->ApplyEngineForce(MAX_ACCELERATION * 3);
+			if (lap == true)
+			{
+				timerTurbo = 2;
+			}
 		}
 		else
 		{
